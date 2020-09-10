@@ -1,15 +1,15 @@
 export interface User{
-    email:String,
-    name:String,
-    dateOfBirth:String,
-    phoneNumber:String,
+    email:string,
+    name:string,
+    dateOfBirth:string,
+    phoneNumber:string,
     address: Address
 
 }
 export interface Address{
-    street:String,
-    city:String,
-    state:String,
-    zipCode:String,
-    country:String,
+    street:string,
+    city:string,
+    state:string,
+    zipCode:string,
+    country:string,
 }
