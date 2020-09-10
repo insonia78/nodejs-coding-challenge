@@ -1,6 +1,8 @@
 import * as Users from '../../../data/users.json';
 import fs from 'fs';
-import { User,Address } from '../../interfaces/user.interface';
+import { User} from '../../interfaces/user.interface';
+import { HelperClass } from './../HelperClass/helperClass';
+
 export class UserClass{
     users:any ; 
     user:User = {
@@ -22,22 +24,30 @@ export class UserClass{
         try
         {
              this.users =  fs.readFileSync('data/users.json');
-             this.users = JSON.parse(this.users);
+             this.users = HelperClass.sortUserAscEmailArray(JSON.parse(this.users));
         }catch(e)
         {
-            console.log(e);  
+            console.log(e);
         }
-       
+
     }
-    getAllUsers() 
+    getAllUsers(sortBy:string = "name",sortDirestion:string = "ascending")
     {
-        return this.users;
+        if(sortBy.localeCompare("email") === 0 && sortDirestion.localeCompare("ascending") === 0)
+            return HelperClass.sortUserAscEmailArray(this.users);
+        else if(sortBy.localeCompare("email") === 0 && sortDirestion.localeCompare("descending") === 0)
+            return HelperClass.sortUserDescEmailArray(this.users);
+        else if(sortBy.localeCompare("name") === 0 && sortDirestion.localeCompare("descending") === 0)
+            return HelperClass.sortUserDescNameArray(this.users);
+        else
+            return HelperClass.sortUserAscNameArray(this.users);
+
     }
     createUser(user:User)
     {
         try{
-           console.log(user);
            this.users.push(user);
+           this.users = HelperClass.sortUserAscEmailArray(this.users);
            fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
             if (err) return console.log(err);
             console.log("writing to users file");
@@ -46,6 +56,14 @@ export class UserClass{
         {
             console.log(e);
         }
-
+    }
+    updateUser(user:User,index:number)
+    {
+        try{
+           this.users[index] = user;
+        }catch(e){
+            console.log(e); 
+        }
+        
     }
 }

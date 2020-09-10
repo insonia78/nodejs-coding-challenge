@@ -1,9 +1,9 @@
 export interface User{
     email:string,
     name:string,
-    dateOfBirth:string,
-    phoneNumber:string,
-    address: Address
+    dateOfBirth?:string,
+    phoneNumber?:string,
+    address?:Address
 
 }
 export interface Address{
