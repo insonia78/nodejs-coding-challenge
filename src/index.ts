@@ -1,6 +1,6 @@
 const app  = require('./app');
-import {  UserClass } from './userClass';
-import { HelperClass } from './helperClass';
+import {  UserClass } from './Class/UserClass/userClass';
+import { HelperClass } from './Class/UserClass/helperClass';
 const userClass = new UserClass(); 
 userClass.initData();
 app.get('/', (req:any, res:any) => {
