@@ -1,17 +1,7 @@
-import * as Users from './../data/users.json';
-import fs from 'fs';
-import { User } from './user.interface';
 export class HelperClass{
-    users:any ;    
-    constructor(){}
-    initData(){
-       this.users =  fs.readFileSync("data/users.json");
-       this.users = JSON.parse(this.users);
-    }
-    getAllUsers()
+
+    static isEmpty(value:any)
     {
-        return this.user;
+        return (!value || 0 === value.length || /^\s*$/.test(value));
     }
-    createUser(user:User){
-  }
 }

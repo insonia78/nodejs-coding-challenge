@@ -1,8 +1,8 @@
 const app  = require('./app');
-import {  HelperClass } from './helperClass';
-
-const helperClass = new HelperClass(); 
-helperClass.initData();
+import {  UserClass } from './userClass';
+import { HelperClass } from './helperClass';
+const userClass = new UserClass(); 
+userClass.initData();
 app.get('/', (req:any, res:any) => {
     res.send('GET - /getAllUsers -> gets all users\n' +
              'POST - /createUser -> create new users' +
@@ -12,10 +12,20 @@ app.get('/', (req:any, res:any) => {
 
 
 app.get('/getAllUsers',(req:any, res:any) => {
-       res.send(helperClass.getAllUsers());
+       let allUsers = userClass.getAllUsers();
+       if(HelperClass.isEmpty(allUsers))
+           res.status(500).send();
+       res.status(200).send(userClass.getAllUsers());
 });
 app.post('/createUser',(req:any,res:any) => {
-
+    try
+    { 
+       userClass.createUser(req.body);
+    }catch(e)
+    {
+        res.status(401).send(e);
+    }
+    res.status(200).send();
 });
 
 app.listen(3000, () =>{
