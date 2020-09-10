@@ -6,10 +6,26 @@ export class HelperClass{
     {
         return (!value || 0 === value.length || /^\s*$/.test(value));
     }
-    static sortUserArray(array:Array<User>)
+    static sortUserAscEmailArray(array:Array<User>)
     {
         return array.sort((n1,n2)=>{
-            return n1.name.localeCompare(n2.name);
+                 if(n1.email > n2.email)
+                     return 1;
+                 if(n1.email < n2.email)
+                     return -1;
+                 return 0;
+            //return n1.name.localeCompare(n2.name);
+        });
+    }
+    static sortUserDescEmailArray(array:Array<User>)
+    {
+        return array.sort((n1,n2)=>{
+                 if(n1.email < n2.email)
+                     return 1;
+                 if(n1.email > n2.email)
+                     return -1;
+                 return 0;
+            //return n1.name.localeCompare(n2.name);
         });
     }
 }
