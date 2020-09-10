@@ -2,10 +2,10 @@
   "name": "nodejs-challenge",
   "version": "1.0.0",
   "description": "MRP NodeJS Coding Challenge",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "data": "node ./bin/generate-data.js",
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node dist/src/index.js",
     "test": "jest --watch",
     "dev":"nodemon src/app.ts",
     "build":"tsc -p"
