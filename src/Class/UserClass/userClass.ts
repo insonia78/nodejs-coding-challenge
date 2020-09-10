@@ -21,7 +21,7 @@ export class UserClass{
     initData(){
         try
         {
-             this.users =  fs.readFileSync("data/users.json");
+             this.users =  fs.readFileSync('data/users.json');
              this.users = JSON.parse(this.users);
         }catch(e)
         {
@@ -35,6 +35,17 @@ export class UserClass{
     }
     createUser(user:User)
     {
-                   
+        try{
+           console.log(user);
+           this.users.push(user);
+           fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
+            if (err) return console.log(err);
+            console.log("writing to users file");
+          });
+        }catch(e)
+        {
+            console.log(e);
+        }
+
     }
 }
