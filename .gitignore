@@ -109,3 +109,7 @@ $RECYCLE.BIN/
 
 # Others
 lib/
+data
+
+/dist/src
+/dist/tests

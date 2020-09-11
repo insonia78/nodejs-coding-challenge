@@ -47,11 +47,8 @@ export class UserClass{
     {
         try{
            this.users.push(user);
-           this.users = HelperClass.sortUserAscEmailArray(this.users);
-           fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
-            if (err) return console.log(err);
-            console.log("writing to users file");
-          });
+           this.users = this.getAllUsers('email');
+           this.writeToUserFile(this.users);
         }catch(e)
         {
             console.log(e);
@@ -60,10 +57,20 @@ export class UserClass{
     updateUser(user:User,index:number)
     {
         try{
+           this.users = this.getAllUsers('email');
            this.users[index] = user;
+            this.writeToUserFile(this.users);
         }catch(e){
-            console.log(e); 
+            console.log(e);
         }
-        
+
+    }
+    private writeToUserFile(users:User[])
+    {
+        fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
+            if (err) return console.log(err);
+            console.log("writing to users file");
+          });
+     
     }
 }
