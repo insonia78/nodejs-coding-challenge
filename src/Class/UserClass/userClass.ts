@@ -1,10 +1,9 @@
-import * as Users from '../../../data/users.json';
 import fs from 'fs';
 import { User} from '../../interfaces/user.interface';
 import { HelperClass } from './../HelperClass/helperClass';
 
 export class UserClass{
-    users:any ; 
+    users:any; 
     user:User = {
         email:"",
         name:"",
@@ -74,6 +73,19 @@ export class UserClass{
         }catch(e){
             console.log(e);
             HelperClass.LoggerError(this.constructor.name +":"+`updateUser() `+ e);
+        }
+
+    }
+    deleteUser(index:number)
+    {
+        try{
+           HelperClass.LoggerInfo(this.constructor.name +":"+`deleteUser()`);
+           this.users = this.getAllUsers('email');
+           this.users.splice(index,1);
+           this.writeToUserFile(this.users);
+        }catch(e){
+            console.log(e);
+            HelperClass.LoggerError(this.constructor.name +":"+`deleteUser() `+ e);
         }
 
     }

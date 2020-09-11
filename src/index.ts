@@ -25,12 +25,10 @@ _app.get('/', (req:any, res:any) => {
 _app.get('/getAllUsers',(req:any, res:any) => {
     HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl);
        let allUsers = userClass.getAllUsers();
-       console.log("getAllUser");
        if(HelperClass.isEmpty(allUsers))
        {
            res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send("Server Error");
            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
-           
            return;
        }
        res.status(HttpResponseCode.OK).send(userClass.getAllUsers());
@@ -86,6 +84,36 @@ _app.put('/updateUser/:email',(req:any,res:any) => {
         HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST +":"+ e);
     }
     res.status(HttpResponseCode.OK).send("User Updated");
+    HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.OK);
+
+});
+//DELETE
+_app.delete('/deleteUser/:email',(req:any,res:any) => {
+    HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl);
+
+    try
+    {
+        if(!HelperClass.validateEmail(req.params.email))
+        {
+            res.status(HttpResponseCode.BAD_REQUEST).send("Email Formated Wrong");
+            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
+            return;
+        }
+        let users:User[] =  userClass.getAllUsers("email");
+        let index:number = users.findIndex(( e:User ) => e.email === req.params.email)
+        if(index === -1 || req.body.email === "" || req.body.name === "" )
+        {
+            res.status(HttpResponseCode.BAD_REQUEST).send("Bad Request");
+            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
+            return;
+        } 
+        userClass.deleteUser(index);
+    }catch(e)
+    {
+        res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send(e);
+        HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST +":"+ e);
+    }
+    res.status(HttpResponseCode.OK).send("Delete Updated");
     HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.OK);
 
 });
