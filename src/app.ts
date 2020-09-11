@@ -50,7 +50,7 @@ app.post('/createUser',(req:any,res:any) => {
         if(!HelperClass.validateEmail(req.body.email))
          {
              res.status(HttpResponseCode.BAD_REQUEST).send("Email Formated Wrong");
-             HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
+             HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
              return;
          }
          let users:User[] =  userClass.getAllUsers("email");
@@ -86,6 +86,7 @@ app.put('/updateUser/:email',(req:any,res:any) => {
         }
         let users:User[] =  userClass.getAllUsers("email");
         let index:number = users.findIndex(( e:User ) => e.email === req.params.email);
+        console.log("index", index);
         if(index === -1 || req.body.email === "" || req.body.name === "" )
         {
             res.status(HttpResponseCode.BAD_REQUEST).send("Bad Request");
