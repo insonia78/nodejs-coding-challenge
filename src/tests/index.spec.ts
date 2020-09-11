@@ -10,6 +10,26 @@ test('GetAllUsers request', async () => {
    await request(app).get('/getAllUsers').send()
               .expect(200);
 });
+test('GetAllUsers sortBy=email&sortDirection=descending&page=2&limit=5 request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=email&sortDirection=descending&page=2&limit=5').send()
+             .expect(200);
+});
+test('GetAllUsers sortBy=emai&sortDirection=descending&page=2&limit=5 request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=emai&sortDirection=descending&page=2&limit=5').send()
+             .expect(400);
+});
+test('GetAllUsers sortBy=email&sortDirection=descendin&page=2&limit=5 request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=email&sortDirection=descendin&page=2&limit=5').send()
+             .expect(400);
+});
+test('GetAllUsers sortBy=email&sortDirection=descending&page=&limit=5 request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=email&sortDirection=descending&page=&limit=5').send()
+             .expect(400);
+});
+test('GetAllUsers sortBy=email&sortDirection=descending&page=2&limit= request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=email&sortDirection=descending&page=&limit=').send()
+             .expect(400);
+});
 test('CreateUser request 200', async () => {
     let user = {
       "email": "Test_test80@test.com",
