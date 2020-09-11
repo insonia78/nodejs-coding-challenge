@@ -14,6 +14,10 @@ test('GetAllUsers sortBy=email&sortDirection=descending&page=2&limit=5 request',
   await request(app).get('/getAllUsers/?sortBy=email&sortDirection=descending&page=2&limit=5').send()
              .expect(200);
 });
+test('GetAllUsers sortBy=&sortDirection=descending&page=2&limit=5 request', async () => {
+  await request(app).get('/getAllUsers/?sortBy=&sortDirection=descending&page=2&limit=5').send()
+             .expect(400);
+});
 test('GetAllUsers sortBy=emai&sortDirection=descending&page=2&limit=5 request', async () => {
   await request(app).get('/getAllUsers/?sortBy=emai&sortDirection=descending&page=2&limit=5').send()
              .expect(400);

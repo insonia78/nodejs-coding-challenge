@@ -42,7 +42,11 @@ app.get('/getAllUsers',(req:any, res:any) => {
      {        
         error = true;
      }
-     else if(query.page === "" && query.limit === "" && (!(query.limit === undefined) && !(query.page === undefined)))
+     else if((query.sortDirection === "" || query.sortDirection === "") && !(query.sortDirection === undefined))
+     {
+         error = true;
+     }
+     else if((query.page === "" || query.limit === "") && (!(query.limit === undefined) && !(query.page === undefined)))
      {         
         error = true;
      }
@@ -53,7 +57,7 @@ app.get('/getAllUsers',(req:any, res:any) => {
      if(error)
      {
         res.status(HttpResponseCode.BAD_REQUEST).send("Bad Format");
-        HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
+        HelperClass.LoggerError("line 56 " + req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
         return;
      }
 
@@ -68,7 +72,7 @@ app.get('/getAllUsers',(req:any, res:any) => {
     if(HelperClass.isEmpty(allUsers))
     {
         res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send("Server Error");
-        HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
+        HelperClass.LoggerError("line 71" + req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
         return;
     }
 
@@ -107,7 +111,7 @@ app.post('/createUser',(req:any,res:any) => {
          if(index !== -1 || req.body.name === "" )
         {
             res.status(HttpResponseCode.BAD_REQUEST).send("Data non valid");
-            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST + ":" + "data not valid");
+            HelperClass.LoggerError("line 110"+req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST + ":" + "data not valid");
             return;
         }
         userClass.createUser(req.body);
@@ -139,7 +143,7 @@ app.put('/updateUser/:email',(req:any,res:any) => {
         if(index === -1 || req.body.email === "" || req.body.name === "" )
         {
             res.status(HttpResponseCode.BAD_REQUEST).send("Bad Request");
-            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
+            HelperClass.LoggerError("line 142"+req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
             return;
         } 
         userClass.updateUser(req.body,index);
@@ -169,14 +173,14 @@ app.delete('/deleteUser/:email',(req:any,res:any) => {
         if(index === -1 || req.body.email === "" || req.body.name === "" )
         {
             res.status(HttpResponseCode.BAD_REQUEST).send("Bad Request");
-            HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
+            HelperClass.LoggerError("line 172 "+req.method + ":"+ req.originalUrl +":"+HttpResponseCode.BAD_REQUEST);
             return;
         } 
         userClass.deleteUser(index);
     }catch(e)
     {
         res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send(e);
-        HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST +":"+ e);
+        HelperClass.LoggerError("line 179" + req.method + ":"+ req.originalUrl +":"+ HttpResponseCode.BAD_REQUEST +":"+ e);
     }
     res.status(HttpResponseCode.OK).send("Delete Updated");
     HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.OK);
