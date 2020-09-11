@@ -103,6 +103,17 @@ export class UserClass{
                 }
                 console.log("writing to users file");
                 HelperClass.LoggerInfo(this.constructor.name +":"+`writeToUserFile() writing to users file`);
+                fs.writeFile('dist/data/users.json', JSON.stringify(this.users), (err) => {
+                    if (err)
+                    {
+                        HelperClass.LoggerError(this +":"+`writeToUserFile() `+ err);
+                        console.log(err);
+                        throw new Error("Error can't write to file");
+                    }
+                    console.log("writing to dist/users file");
+                    HelperClass.LoggerInfo(this.constructor.name +":"+`writeToUserFile() writing to dist/users file`);
+                    
+                });
             });
         }catch(e){
             HelperClass.LoggerError(this.constructor.name +":"+`writeToUserFile() `+ e);

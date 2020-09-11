@@ -5,7 +5,7 @@ import { User } from './interfaces/user.interface';
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-
+const url = require('url');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -30,15 +30,23 @@ app.get('/', (req:any, res:any) => {
 
 //GET /getAllUsers
 app.get('/getAllUsers',(req:any, res:any) => {
-    HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl);
-       let allUsers = userClass.getAllUsers();
-       if(HelperClass.isEmpty(allUsers))
-       {
-           res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send("Server Error");
-           HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
-           return;
-       }
-       res.status(HttpResponseCode.OK).send(userClass.getAllUsers());
+     HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl);
+     let query =  url.parse(req.url,true).query;
+     let allUsers;
+     if(!(query.sortBy === undefined) && !(query.sortDirection === undefined ))
+          allUsers = userClass.getAllUsers(query.sortBy,query.sortDirection);     
+     else if(!(query.sortBy === undefined))
+          allUsers = userClass.getAllUsers(query.sortBy);     
+     else
+          allUsers = userClass.getAllUsers(); 
+        
+    if(HelperClass.isEmpty(allUsers))
+    {
+        res.status(HttpResponseCode.INTERNAL_SERVER_ERROR).send("Server Error");
+        HelperClass.LoggerError(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.INTERNAL_SERVER_ERROR);
+        return;
+    }
+       res.status(HttpResponseCode.OK).send(allUsers);
        HelperClass.LoggerInfo(req.method + ":"+ req.originalUrl +":"+HttpResponseCode.OK);
 
 });
@@ -54,7 +62,8 @@ app.post('/createUser',(req:any,res:any) => {
              return;
          }
          let users:User[] =  userClass.getAllUsers("email");
-         let index:number = users.findIndex(( e:User ) => e.email === req.params.email);
+         let index:number = users.findIndex(( e:User ) => e.email === req.body.email);
+         console.log('index',index);
          if(index !== -1 || req.body.name === "" )
         {
             res.status(HttpResponseCode.BAD_REQUEST).send("Data non valid");
