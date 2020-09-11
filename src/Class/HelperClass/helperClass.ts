@@ -1,13 +1,17 @@
 import { User } from "../../interfaces/user.interface";
-import winston from 'winston';
+import  {transports, createLogger, format}  from 'winston';
 const logConfiguration = {
-             'transports':[
-                 new winston.transports.File({
+            'format': format.combine(
+                format.timestamp(),
+                format.json()
+            ),
+             transports:[
+                 new transports.File({
                      filename:'./logs/logs.log'
                  })
              ] 
 };
-const logger = winston.createLogger(logConfiguration);
+const logger = createLogger(logConfiguration);
 export class HelperClass{
 
 
