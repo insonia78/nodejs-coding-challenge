@@ -1,6 +1,15 @@
 import { User } from "../../interfaces/user.interface";
-
+import winston from 'winston';
+const logConfiguration = {
+             'transports':[
+                 new winston.transports.File({
+                     filename:'./logs/logs.log'
+                 })
+             ] 
+};
+const logger = winston.createLogger(logConfiguration);
 export class HelperClass{
+
 
     static isEmpty(value:any)
     {
@@ -14,7 +23,7 @@ export class HelperClass{
                  if(n1.email < n2.email)
                      return -1;
                  return 0;
-            //return n1.name.localeCompare(n2.name);
+
         });
     }
     static sortUserDescEmailArray(array:Array<User>)
@@ -25,7 +34,7 @@ export class HelperClass{
                  if(n1.email > n2.email)
                      return -1;
                  return 0;
-            
+
         });
     }
     static sortUserAscNameArray(array:Array<User>)
@@ -36,7 +45,7 @@ export class HelperClass{
                  if(n1.name < n2.name)
                      return -1;
                  return 0;
-            //return n1.name.localeCompare(n2.name);
+
         });
     }
     static sortUserDescNameArray(array:Array<User>)
@@ -54,4 +63,12 @@ export class HelperClass{
         let regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         return regex.test(email)
       }
+    static LoggerInfo(value:string)
+    {
+         logger.info(value);
+    }
+    static LoggerError(value:string)
+    {
+         logger.error(value);
+    }
 }

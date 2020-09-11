@@ -23,16 +23,24 @@ export class UserClass{
     initData(){
         try
         {
+             HelperClass.LoggerInfo(this.constructor.name +":"+"initData()");
              this.users =  fs.readFileSync('data/users.json');
              this.users = HelperClass.sortUserAscEmailArray(JSON.parse(this.users));
         }catch(e)
         {
             console.log(e);
+            HelperClass.LoggerError(this.constructor.name +":"+"initData()"+ e);
         }
 
     }
     getAllUsers(sortBy:string = "name",sortDirestion:string = "ascending")
     {
+        HelperClass.LoggerInfo(this.constructor.name +":"+`getAllUsers(${sortBy} , ${sortDirestion})`);
+        if(this.users.length === 0)
+        {
+              HelperClass.LoggerError(this.constructor.name +":"+`getAllUsers(${sortBy} , ${sortDirestion}) this.users.length = 0`);
+              return new Array<User>();
+        } 
         if(sortBy.localeCompare("email") === 0 && sortDirestion.localeCompare("ascending") === 0)
             return HelperClass.sortUserAscEmailArray(this.users);
         else if(sortBy.localeCompare("email") === 0 && sortDirestion.localeCompare("descending") === 0)
@@ -46,31 +54,46 @@ export class UserClass{
     createUser(user:User)
     {
         try{
+            HelperClass.LoggerInfo(this.constructor.name +":"+`createUser(${user})`);
            this.users.push(user);
            this.users = this.getAllUsers('email');
            this.writeToUserFile(this.users);
         }catch(e)
         {
+            HelperClass.LoggerError(this.constructor.name +":"+`createUser(${user}) `+ e);
             console.log(e);
         }
     }
     updateUser(user:User,index:number)
     {
         try{
+           HelperClass.LoggerInfo(this.constructor.name +":"+`updateUser()`);
            this.users = this.getAllUsers('email');
            this.users[index] = user;
             this.writeToUserFile(this.users);
         }catch(e){
             console.log(e);
+            HelperClass.LoggerError(this.constructor.name +":"+`updateUser() `+ e);
         }
 
     }
     private writeToUserFile(users:User[])
     {
-        fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
-            if (err) return console.log(err);
-            console.log("writing to users file");
-          });
-     
+        try
+        {
+            HelperClass.LoggerInfo(this.constructor.name +":"+`writeToUserFile()`);
+            fs.writeFile('data/users.json', JSON.stringify(this.users), (err) => {
+                if (err)
+                {
+                    HelperClass.LoggerError(this +":"+`writeToUserFile() `+ err);
+                    console.log(err);
+                    throw new Error("Error can't write to file");
+                }
+                console.log("writing to users file");
+                HelperClass.LoggerInfo(this.constructor.name +":"+`writeToUserFile() writing to users file`);
+            });
+        }catch(e){
+            HelperClass.LoggerError(this.constructor.name +":"+`writeToUserFile() `+ e);
+        }
     }
 }
