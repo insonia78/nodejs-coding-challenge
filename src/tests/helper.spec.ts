@@ -1,5 +1,5 @@
-import  { HelperClass }  from './helperClass';
-import { User } from './../../interfaces/user.interface';
+import  { HelperClass }  from '../Class/HelperClass/helperClass';
+import { User } from '../interfaces/user.interface';
 test('Testing empty method empty string ',()=>{
     const value = HelperClass.isEmpty("");
     expect(value).toBe(true);

@@ -14,7 +14,9 @@
   "author": "Cody Mercer <cmercer@mrpfd.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "@types/mongoose": "^5.7.36",
     "express": "^4.17.1",
+    "mongoose": "^5.10.4",
     "ts-node-dev": "^1.0.0-pre.62",
     "winston": "^3.3.3"
   },

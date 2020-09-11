@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { User} from '../../interfaces/user.interface';
-import { HelperClass } from './../HelperClass/helperClass';
+import { HelperClass } from '../../Class/HelperClass/helperClass';
 
 export class UserClass{
     users:any; 
